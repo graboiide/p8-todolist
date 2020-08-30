@@ -30,6 +30,8 @@ class AppFixtures extends Fixture
             $user->setUsername($faker->userName);
             if($i==0)
                 $user->setUsername('test');
+            if($i==1)
+                $user->setUsername('anonyme');
             $users[] = $user;
             $manager->persist($user);
         }
