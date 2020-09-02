@@ -100,8 +100,13 @@ class User implements UserInterface
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        //Add ROLE_USER
+        return array_merge(['ROLE_USER'],$this->userRoles->map(function ($role){
+            /** @var $role Role */
+            return $role->getTitle();
+        })->toArray());
     }
+
 
     public function eraseCredentials()
     {

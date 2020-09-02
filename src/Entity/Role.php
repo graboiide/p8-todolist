@@ -68,6 +68,20 @@ class Role
         return $this;
     }
 
+
+    /**
+     * Return le titre du role sans le ROLE_
+     * @return string
+     */
+    public function displayName()
+    {
+        return ucfirst(strtolower(str_replace('ROLE_','',$this->title)));
+    }
+    public function __toString()
+    {
+        return $this->rename();
+    }
+
     public function removeUser(User $user): self
     {
         if ($this->user->contains($user)) {
