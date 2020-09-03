@@ -42,9 +42,10 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addRoles($user,$manager);
+            //seul les admins peuvent changer le role d'un utilisateur
+            if($this->isGranted("ROLE_ADMIN"))
+                $this->addRoles($user,$manager);
             $user->setPassword($encoder->encodePassword($user,$user->getPassword()));
             $manager->persist($user);
             $manager->flush();
