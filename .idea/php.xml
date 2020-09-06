@@ -105,4 +105,9 @@
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
+  <component name="PhpRuntimeConfiguration">
+    <extensions>
+      <extension name="blackfire" enabled="true" />
+    </extensions>
+  </component>
 </project>

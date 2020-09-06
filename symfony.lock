@@ -108,6 +108,9 @@
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.1.0"
+    },
     "monolog/monolog": {
         "version": "2.1.1"
     },
@@ -118,7 +121,7 @@
         "version": "2.2.3"
     },
     "php": {
-        "version": "7.3"
+        "version": "7.4"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -154,6 +157,18 @@
         },
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "sensiolabs/security-checker": {
+        "version": "4.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.0",
+            "ref": "160c9b600564faa1224e8f387d49ef13ceb8b793"
+        },
+        "files": [
+            "./config/packages/security_checker.yaml"
         ]
     },
     "symfony/asset": {
@@ -527,6 +542,9 @@
     },
     "twig/twig": {
         "version": "v3.0.5"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"

@@ -68,7 +68,7 @@ class TaskController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @return RedirectResponse|Response
-     * @Security ("is_granted('ROLE_USER') and user === task.getUser()")
+     * @Security ("(is_granted('ROLE_USER') and user === task.getUser()) or is_granted('ROLE_ADMIN')")
      */
     public function editAction(Task $task, Request $request,EntityManagerInterface $manager)
     {
