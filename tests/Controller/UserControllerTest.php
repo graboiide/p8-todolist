@@ -17,8 +17,17 @@ class UserControllerTest extends WebTestCase
 {
     use FixturesTrait;
     use ConnectTrait;
+    private function getForm($crawler,$labelButton,$username = 'test')
+    {
+        return $crawler->selectButton($labelButton)->form([
+            'user[username]'=>$username,
+            'user[password][first]'=>'123456',
+            'user[password][second]'=>'123456',
+            'user[email]'=>$username.'@mail.gt'
+        ]);
+    }
 
-    public function testAccesslistUsersForAdmin()
+    public function testAccessListUsersForAdmin()
     {
         $client = static::createClient();
         $this->connectedUser($client,'admin');
@@ -49,34 +58,17 @@ class UserControllerTest extends WebTestCase
 
         $client = static::createClient();
         $this->connectedUser($client,'admin');
-        $crawler = $client->request('GET', '/users/create');
-        $form = $crawler->selectButton('Ajouter')->form([
-            'user[username]'=>'userstest',
-            'user[password][first]'=>'123456',
-            'user[password][second]'=>'123456',
-            'user[email]'=>'gttt@g.gt',
-            'user[userRoles]'=>[2]
-        ]);
-
-        $client->submit($form);
+        $client->submit($this->getForm($client->request('GET', '/users/create'),'Ajouter','userCreate'));
         $client->followRedirect();
         $this->assertSelectorExists('.alert-success');
 
     }
     public function testAdminEditUser()
     {
-
         $client = static::createClient();
-
         $this->connectedUser($client,'admin');
-        $crawler = $client->request('GET', '/users/2/edit');
-        $form = $crawler->selectButton('Modifier')->form([
-            'user[username]'=>'test',
-            'user[password][first]'=>'123456',
-            'user[password][second]'=>'123456',
-            'user[email]'=>'new@mail.gt',
-            'user[userRoles]'=>[1]
-        ]);
+        $form = $this->getForm($client->request('GET', '/users/2/edit'),'Modifier','test')
+            ->setValues(['user[userRoles]'=>[1]]);
 
         $client->submit($form);
         $this->assertResponseRedirects('/users');
@@ -84,22 +76,12 @@ class UserControllerTest extends WebTestCase
         $this->assertSelectorExists('.alert-success');
 
     }
+
     public function testUserEditHim()
     {
         $client = static::createClient();
-        //$this->loadFixtures([AppFixturesTest::class]);
-
         $this->connectedUser($client,'test');
-        $crawler = $client->request('GET', '/users/2/edit');
-        $form = $crawler->selectButton('Modifier')->form([
-            'user[username]'=>'test',
-            'user[password][first]'=>'123456',
-            'user[password][second]'=>'123456',
-            'user[email]'=>'new@mail.gt'
-        ]);
-
-        $client->submit($form);
-
+        $client->submit($this->getForm($client->request('GET', '/users/2/edit'),'Modifier','test'));
         $this->assertSelectorExists('.alert-success');
 
     }
