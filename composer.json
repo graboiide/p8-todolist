@@ -8,7 +8,9 @@
         "blackfire/php-sdk": "^1.23",
         "composer/package-versions-deprecated": "1.10.99.1",
         "doctrine/annotations": "^1.0",
-        "doctrine/doctrine-bundle": "^2.1",
+        "doctrine/cache": "^1.10",
+        "doctrine/common": "^2.0",
+        "doctrine/doctrine-bundle": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "doctrine/orm": "^2.7",
         "phpdocumentor/reflection-docblock": "^5.2",
@@ -44,6 +46,7 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
         "fzaninotto/faker": "^1.9",
+        "liip/test-fixtures-bundle": "^1.9",
         "symfony/browser-kit": "^5.1",
         "symfony/css-selector": "^5.1",
         "symfony/debug-bundle": "^5.1",
