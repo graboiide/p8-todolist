@@ -3,18 +3,19 @@ php:
   - '7.4.9'
 env:
   global:
-    - CC_TEST_REPORTER_ID=a7f10d105ea13942c33432830848ec7b13b64de07ce87be3981d265921b12aed  
+    - CC_TEST_REPORTER_ID=a7f10d105ea13942c33432830848ec7b13b64de07ce87be3981d265921b12aed
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)    
 services:
     - mysql
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build    
+  - ./cc-test-reporter before-build  
 script:
   - composer install
-  - bundle exec rspec
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:update --force --env=test
   - php bin/phpunit tests
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+  - "phpunit --testsuite=unit --coverage-text --coverage-clover build/logs/clover.xml"
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
+
