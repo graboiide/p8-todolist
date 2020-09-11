@@ -1,7 +1,9 @@
 language: php
 php:
   - '7.4.9'
-
+  
+services:
+    - mysql
     
 script:
   - composer install
