@@ -16,5 +16,5 @@ script:
   - php bin/console doctrine:database:create --env=test
   - php bin/console doctrine:schema:update --force --env=test
   - php bin/phpunit tests
-  - php bin/phpunit --testsuite=unit --coverage-text --coverage-clover build/logs/clover.xml
+  - php bin/phpunit tests --testsuite=unit --coverage-text --coverage-clover build/logs/clover.xml
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
