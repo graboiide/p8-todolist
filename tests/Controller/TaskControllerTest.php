@@ -16,8 +16,15 @@ use Symfony\Component\HttpFoundation\Response;
 class TaskControllerTest extends WebTestCase
 {
     use FixturesTrait;
-
     use ConnectTrait;
+
+    public function getForm($crawler,$labelButton,$title = 'task adding')
+    {
+       return $crawler->selectButton($labelButton)->form([
+            'task[title]'=>$title,
+            'task[content]'=>'Content of test add task'
+        ]);
+    }
     public function testDisplayAllTask()
     {
 
@@ -28,22 +35,34 @@ class TaskControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('.tasks-list');
     }
+    public function testDisplayAllTaskDone()
+    {
+        $client = static::createClient();
+        $this->connectedUser($client,'test');
+        $crawler = $client->request('GET', '/tasks_done');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertSelectorExists('.tasks-list');
+    }
+    public function testToggleActionTask()
+    {
+        $client = static::createClient();
+        $this->connectedUser($client,'test');
+        $client->request('GET', '/tasks/1/toggle');
+        $client->followRedirect();
+        $this->assertSelectorExists('.alert-success');
+    }
     public function testUserCreateTask()
     {
 
         $client = static::createClient();
         $this->connectedUser($client,'test');
-        $crawler = $client->request('GET', '/tasks/create');
-        $form = $crawler->selectButton('Ajouter')->form([
-            'task[title]'=>'test add task',
-            'task[content]'=>'Content of test add task'
-        ]);
-        $client->submit($form);
+
+        $client->submit($this->getForm($client->request('GET', '/tasks/create'),'Ajouter'));
         $client->followRedirect();
         $this->assertSelectorExists('.alert-success');
 
     }
-    public function testEditOneTask()
+    public function testDisplayEditOneTask()
     {
 
         $client = static::createClient();
@@ -51,27 +70,50 @@ class TaskControllerTest extends WebTestCase
         $taskRepo = static::$container->get(TaskRepository::class);
         /** @var Task $taskTest */
         $taskTest = $taskRepo->findOneBy(['title'=>'test task']);
-
         $client->request('GET', '/tasks/'.$taskTest->getId().'/edit');
-
         $this->assertSelectorExists('.edit-task');
 
     }
-
-    public function testUserDeleteHisTask()
+    public function testAdminEditTask()
     {
         $client = static::createClient();
-        //get task
-        $taskRepo = static::$container->get(TaskRepository::class);
-        /** @var Task $taskTest */
-        $taskTest = $taskRepo->findOneBy(['title'=>'test task']);
         //connect with user
-        $this->connectedUser($client,'test');
+        $this->connectedUser($client,'admin');
 
-        $client->request('GET', '/tasks/'.$taskTest->getId().'/delete');
+        $client->submit($this->getForm($client->request('GET', '/tasks/2/edit'),'Modifier','title test'));
         $client->followRedirect();
         $this->assertSelectorExists('.alert-success');
     }
+    public function testUserEditTaskNotHim()
+    {
+        $client = static::createClient();
+        //connect with user
+        $this->connectedUser($client,'test');
+        $client->request('GET', '/tasks/1/edit');
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+    public function testUserEditHisTask()
+    {
+        $client = static::createClient();
+        //connect with user
+        $this->connectedUser($client,'test');
+
+        $client->submit($this->getForm($client->request('GET', '/tasks/2/edit'),'Modifier','title test'));
+        $client->followRedirect();
+        $this->assertSelectorExists('.alert-success');
+    }
+    public function testUserDeleteHisTask()
+    {
+        $client = static::createClient();
+
+        //connect with user
+        $this->connectedUser($client,'test');
+
+        $client->request('GET', '/tasks/2/delete');
+        $client->followRedirect();
+        $this->assertSelectorExists('.alert-success');
+    }
+
     public function testUserDeleteTaskNotHim()
     {
 

@@ -3,7 +3,9 @@
 namespace App\Tests\Controller;
 
 use App\DataFixtures\AppFixturesTest;
+use App\Entity\Role;
 use App\Entity\Task;
+use App\Entity\User;
 use App\Repository\TaskRepository;
 
 use App\Repository\UserRepository;
@@ -27,8 +29,10 @@ class UserControllerTest extends WebTestCase
         ]);
     }
 
+
     public function testAccessListUsersForAdmin()
     {
+
         $client = static::createClient();
         $this->connectedUser($client,'admin');
         $client->request('GET', '/users');
@@ -36,7 +40,7 @@ class UserControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1','Liste des utilisateurs');
 
     }
-    public function testAccesslistUsersForbiddenForUser()
+    public function testAccessListUsersForbiddenForUser()
     {
         $client = static::createClient();
         $this->connectedUser($client,'test');
@@ -53,12 +57,13 @@ class UserControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorTextContains('h1','Modifier test');
     }
+
     public function testAdminCreateUser()
     {
 
         $client = static::createClient();
         $this->connectedUser($client,'admin');
-        $client->submit($this->getForm($client->request('GET', '/users/create'),'Ajouter','userCreate'));
+        $client->submit($this->getForm($client->request('GET', '/users/create'),'Ajouter','userCreate')->setValues(['user[userRoles]'=>[2]]));
         $client->followRedirect();
         $this->assertSelectorExists('.alert-success');
 

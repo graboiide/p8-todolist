@@ -21,8 +21,21 @@ class TaskTest extends KernelTestCase
         $task->setContent('content');
         $task->setCreatedAt(new DateTime('now'));
         $task->setIsDone(true);
+
         return $task;
     }
+    public function testGetIsDone()
+    {
+        $task=$this->getEntity();
+        $this->assertSame(true,$task->getIsDone());
+    }
+    public function testGetCreatedAt()
+    {
+        $task=$this->getEntity();
+
+        $this->assertSame(is_null($task->getCreatedAt()) ? false : true,true);
+    }
+
     public function testValidateEntity()
     {
         $this->assertHasErrors($this->getEntity(),0);
@@ -39,4 +52,5 @@ class TaskTest extends KernelTestCase
         $task->setContent('');
         $this->assertHasErrors($task,1);
     }
+
 }

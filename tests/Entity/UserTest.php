@@ -4,6 +4,7 @@
 namespace App\Tests\Entity;
 
 
+use App\Entity\Role;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Tests\Controller\EntityTrait;
@@ -27,6 +28,30 @@ class UserTest extends KernelTestCase
     public function testValidateEntity()
     {
         $this->assertHasErrors($this->getEntity(),0);
+
+    }
+    public function testAddAndRemoveTask()
+    {
+        $task = new Task();
+        $task->setTitle('un titre');
+        $user = $this->getEntity();
+        $user->addTask($task);
+        $this->assertSame('un titre',$user->getTasks()[0]->getTitle());
+        $user->removeTask($task);
+
+        $this->assertSame([],$user->getTasks()->toArray());
+
+    }
+    public function testAddAndRemoveRoles()
+    {
+        $role = new Role();
+        $role->setTitle('ROLE_ADMIN');
+        $user = $this->getEntity();
+        $user->addUserRole($role);
+        $this->assertSame('ROLE_ADMIN',$user->getUserRoles()[0]->getTitle());
+        $user->removeUserRole($role);
+
+        $this->assertSame([],$user->getTasks()->toArray());
 
     }
     public function testEmptyUsername()

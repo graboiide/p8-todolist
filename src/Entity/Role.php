@@ -77,10 +77,7 @@ class Role
     {
         return ucfirst(strtolower(str_replace('ROLE_','',$this->title)));
     }
-    public function __toString()
-    {
-        return $this->rename();
-    }
+
 
     public function removeUser(User $user): self
     {
