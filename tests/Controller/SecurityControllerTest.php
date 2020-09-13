@@ -2,11 +2,13 @@
 
 namespace Tests\App\Controller;
 
+use App\Tests\Controller\ConnectTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class SecurityControllerTest extends WebTestCase
 {
+    use ConnectTrait;
     public function testDisplayLogin()
     {
         $client = static::createClient();
@@ -41,4 +43,5 @@ class SecurityControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
+
 }

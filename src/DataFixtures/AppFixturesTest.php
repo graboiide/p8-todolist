@@ -6,12 +6,13 @@ use App\Entity\Role;
 use App\Entity\Task;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class AppFixturesTest extends Fixture
+class AppFixturesTest extends Fixture implements FixtureGroupInterface
 {
     private $encoder;
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
@@ -82,5 +83,10 @@ class AppFixturesTest extends Fixture
             $manager->persist($task);
         }
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['test'];
     }
 }
