@@ -47,10 +47,10 @@ symfony server:start
 
 Pour lancer une commande de test
 ```bash
-php bin/console doctrine:fixtures:load --group="no-test"
+php bin/phpunit tests
 ```
 
 Pour recupérer le coverage au format html aprés le test
 ```bash
-php bin/phpunit  --coverage-html web/test-coverage
+php bin/phpunit tests --coverage-html web/test-coverage
 ```
