@@ -56,4 +56,4 @@ php bin/phpunit tests --coverage-html web/test-coverage
 ```
 ## Contribution
 
-[Lisez ceci avant de contribué](https://github.com/graboiide/p8-todolist/blob/master/contribution.md)
+[Lisez ceci avant de contribuer](https://github.com/graboiide/p8-todolist/blob/master/contribution.md)
