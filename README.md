@@ -54,3 +54,6 @@ Pour recupérer le coverage au format html aprés le test
 ```bash
 php bin/phpunit tests --coverage-html web/test-coverage
 ```
+## Contribution
+
+[Lisez ceci avant de contribuer](https://github.com/graboiide/p8-todolist/blob/master/contribution.md)
